@@ -53,7 +53,7 @@ class Add_Confusion_Matrix(Callback):
             # labels = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
 
         figure = plt.figure(figsize=(8, 8))
-        plt.imshow(cm, interpolation='nearest', cmap='magma')
+        plt.imshow(cm, interpolation='nearest')
 
         if normalize:
             sm_cm = plt.cm.ScalarMappable(cmap='magma', norm=plt.Normalize(vmin=0, vmax=1.0))
