@@ -53,13 +53,14 @@ class Add_Confusion_Matrix(Callback):
             # labels = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
 
         figure = plt.figure(figsize=(8, 8))
-        plt.imshow(cm, interpolation='nearest')
 
         if normalize:
-            sm_cm = plt.cm.ScalarMappable(cmap='magma', norm=plt.Normalize(vmin=0, vmax=1.0))
+            plt.imshow(cm, interpolation='nearest', cmap='magma', vmin=0.0, vmax=1.0)
+            sm_cm = plt.cm.ScalarMappable(cmap='magma', norm=plt.Normalize(vmin=0.0, vmax=1.0))
             sm_cm.set_array([])
             plt.colorbar(sm_cm, ticks=np.arange(0, 1.0+0.2, 0.2), shrink=0.5)
         else:
+            plt.imshow(cm, interpolation='nearest', cmap='magma')
             plt.colorbar(shrink=0.5)
 
         plt.title("Confusion matrix")
