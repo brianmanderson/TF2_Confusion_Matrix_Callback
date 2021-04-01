@@ -56,9 +56,9 @@ class Add_Confusion_Matrix(Callback):
         plt.imshow(cm, interpolation='nearest', cmap='magma')
 
         if normalize:
-            sm_cm = plt.cm.ScalarMappable(cmap='jet', norm=plt.Normalize(vmin=0, vmax=1.0))
+            sm_cm = plt.cm.ScalarMappable(cmap='magma', norm=plt.Normalize(vmin=0, vmax=1.0))
             sm_cm.set_array([])
-            plt.colorbar(sm_cm, ticks=np.arange(0, 1.0, 0.2))
+            plt.colorbar(sm_cm, ticks=np.arange(0, 1.0+0.2, 0.2))
 
         plt.title("Confusion matrix")
         plt.colorbar(shrink=0.5)
