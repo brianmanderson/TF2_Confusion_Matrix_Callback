@@ -12,6 +12,54 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
+def plot_confusion_matrix(cm, class_names, normalize=True):
+    """
+    Returns a matplotlib figure containing the plotted confusion matrix.
+
+    Args:
+      cm (array, shape = [n, n]): a confusion matrix of integer classes
+      class_names (array, shape = [n]): String names of the integer classes
+    """
+
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        # # Compute the labels from the normalized confusion matrix.
+        # labels = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
+
+    figure = plt.figure(figsize=(8, 8))
+
+    if normalize:
+        plt.imshow(cm, interpolation='nearest', cmap='magma', vmin=0.0, vmax=1.0)
+        sm_cm = plt.cm.ScalarMappable(cmap='magma', norm=plt.Normalize(vmin=0.0, vmax=1.0))
+        sm_cm.set_array([])
+        plt.colorbar(sm_cm, ticks=np.arange(0, 1.0+0.2, 0.2), shrink=0.5)
+    else:
+        plt.imshow(cm, interpolation='nearest', cmap='magma')
+        plt.colorbar(shrink=0.5)
+
+    plt.title("Confusion matrix")
+    tick_marks = np.arange(len(class_names))
+    plt.xticks(tick_marks, class_names, rotation=45)
+    plt.yticks(tick_marks, class_names)
+
+    # Compute the labels from the normalized confusion matrix.
+    if not normalize:
+        labels = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
+    else:
+        labels = np.around(cm, decimals=2)
+
+    # Use white text if squares are dark; otherwise black.
+    threshold = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        color = "black" if cm[i, j] > threshold else "white"
+        plt.text(j, i, labels[i, j], horizontalalignment="center", color=color)
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    return figure
+
+
 class Add_Confusion_Matrix(Callback):
     def __init__(self, log_dir, validation_steps, validation_data=None, class_names=[], frequency=5):
         super(Add_Confusion_Matrix, self).__init__()
@@ -37,53 +85,6 @@ class Add_Confusion_Matrix(Callback):
         # Add the batch dimension
         image = tf.expand_dims(image, 0)
         return image
-
-    def plot_confusion_matrix(self, cm, class_names, normalize=True):
-        """
-        Returns a matplotlib figure containing the plotted confusion matrix.
-
-        Args:
-          cm (array, shape = [n, n]): a confusion matrix of integer classes
-          class_names (array, shape = [n]): String names of the integer classes
-        """
-
-        if normalize:
-            cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-            # # Compute the labels from the normalized confusion matrix.
-            # labels = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
-
-        figure = plt.figure(figsize=(8, 8))
-
-        if normalize:
-            plt.imshow(cm, interpolation='nearest', cmap='magma', vmin=0.0, vmax=1.0)
-            sm_cm = plt.cm.ScalarMappable(cmap='magma', norm=plt.Normalize(vmin=0.0, vmax=1.0))
-            sm_cm.set_array([])
-            plt.colorbar(sm_cm, ticks=np.arange(0, 1.0+0.2, 0.2), shrink=0.5)
-        else:
-            plt.imshow(cm, interpolation='nearest', cmap='magma')
-            plt.colorbar(shrink=0.5)
-
-        plt.title("Confusion matrix")
-        tick_marks = np.arange(len(class_names))
-        plt.xticks(tick_marks, class_names, rotation=45)
-        plt.yticks(tick_marks, class_names)
-
-        # Compute the labels from the normalized confusion matrix.
-        if not normalize:
-            labels = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
-        else:
-            labels = np.around(cm, decimals=2)
-
-        # Use white text if squares are dark; otherwise black.
-        threshold = cm.max() / 2.
-        for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-            color = "black" if cm[i, j] > threshold else "white"
-            plt.text(j, i, labels[i, j], horizontalalignment="center", color=color)
-
-        plt.tight_layout()
-        plt.ylabel('True label')
-        plt.xlabel('Predicted label')
-        return figure
 
     def log_confusion_matrix(self):
         # Use the model to predict the values from the validation dataset.
