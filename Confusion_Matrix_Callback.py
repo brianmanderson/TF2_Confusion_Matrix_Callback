@@ -100,7 +100,7 @@ class Add_Confusion_Matrix(Callback):
         # Calculate the confusion matrix.
         cm = sklearn.metrics.confusion_matrix(val_labels, val_preds)
         # Log the confusion matrix as an image summary.
-        figure = self.plot_confusion_matrix(cm, class_names=self.class_names)
+        figure = plot_confusion_matrix(cm, class_names=self.class_names)
         cm_image = self.plot_to_image(figure)
         return cm_image
 
