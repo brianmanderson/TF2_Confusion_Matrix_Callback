@@ -6,7 +6,7 @@ confusion_matrix = Add_Confusion_Matrix(log_dir=tensorboard_output, validation_d
                                         validation_steps=len(validation_generator), class_names=class_names, frequency=5)
 ```
 
-### output in Tensorboard
+### Output in Tensorboard
 <p align="center">
     <img src="example/example_confusion_matrix_tensorboard.png" height=500>
 </p>
