@@ -10,3 +10,5 @@ confusion_matrix = Add_Confusion_Matrix(log_dir=tensorboard_output, validation_d
 <p align="center">
     <img src="example/example_confusion_matrix_tensorboard.png" height=500>
 </p>
+
+### IGCT2021 - BMA presentation
